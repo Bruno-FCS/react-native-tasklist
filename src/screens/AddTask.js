@@ -22,6 +22,21 @@ export default class AddTask extends Component {
     ...initialState,
   };
 
+  save = () => {
+    const newTask = {
+      desc: this.state.desc,
+      date: this.state.date,
+    };
+
+    this.props.onSave && this.props.onSave(newTask);
+    this.setState({...initialState});
+  };
+
+  cancel = () => {
+    this.props.onCancel && this.props.onCancel();
+    this.setState({...initialState});
+  };
+
   getDatePicker = () => {
     let datePicker = (
       <DateTimePicker
@@ -56,9 +71,9 @@ export default class AddTask extends Component {
       <Modal
         transparent={true}
         visible={this.props.isVisible}
-        onRequestClose={this.props.onCancel}
+        onRequestClose={this.cancel}
         animationType="slide">
-        <TouchableWithoutFeedback onPress={this.props.onCancel}>
+        <TouchableWithoutFeedback onPress={this.cancel}>
           <View style={styles.background} />
         </TouchableWithoutFeedback>
         <View style={styles.container}>
@@ -71,15 +86,15 @@ export default class AddTask extends Component {
           />
           {this.getDatePicker()}
           <View style={styles.buttons}>
-            <TouchableOpacity onPress={this.props.onCancel}>
+            <TouchableOpacity onPress={this.cancel}>
               <Text style={styles.button}>Cancelar</Text>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={this.save}>
               <Text style={styles.button}>Salvar</Text>
             </TouchableOpacity>
           </View>
         </View>
-        <TouchableWithoutFeedback onPress={this.props.onCancel}>
+        <TouchableWithoutFeedback onPress={this.cancel}>
           <View style={styles.background} />
         </TouchableWithoutFeedback>
       </Modal>
